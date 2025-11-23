@@ -1,0 +1,31 @@
+from typing import List, Tuple
+from item import Item
+
+
+class Order:
+
+    def __init__(self, orderID: int, customer_name: str = ""):
+ 
+        # initializing an Order here
+        self.orderID = orderID
+        self.name = customer_name
+        self.item_list = []
+    
+    def add_item(self, item: Item, quantity: int = 1):
+
+        # adds an item to the order
+        self.item_list.append((item, quantity))
+    
+    def remove_item(self, item_id: int) -> None:
+        #removes an Item from this order by item_id
+
+        self.items_list = [i for i in self.items_list if i.item_id != item_id]
+    
+    
+    def get_items(self) -> list[Item]:
+            
+            # this returns all items in this order
+        return self.items_list
+    
+    def __str__(self):
+         return (f"Order({self.orderID}, {self.name}, " f"Items: {len(self.item_list)})")
