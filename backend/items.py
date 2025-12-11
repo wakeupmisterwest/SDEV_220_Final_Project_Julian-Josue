@@ -3,9 +3,9 @@
 
 class Item:
     #Represents an individual item food or drink
-    def __init__(self, itemID: int, name: str, description: str, price: float):
+    def __init__(self, item_ID: int, name: str, description: str, price: float):
    
-        self.itemID = itemID # stores the unique id for the item
+        self.itemID = item_ID # stores the unique id for the item
         self.name = name    # this stores name of the item
         self.description = description  # this stores description about the items
         self.price = price # this stores price of the items

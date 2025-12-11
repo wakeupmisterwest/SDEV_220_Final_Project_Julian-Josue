@@ -1,3 +1,4 @@
+
 from typing import List, Tuple
 from items import Item
 
@@ -19,13 +20,13 @@ class Order:
     def remove_item(self, item_id: int) -> None:
         #removes an Item from this order by item_id
 
-        self.items_list = [i for i in self.items_list if i.item_id != item_id]
+        self.item_list = [(item, qty) for item, qty in self.item_list if item.itemID != item_id]
     
     
-    def get_items(self) -> list[Item]:
+    def get_items(self) -> list[tuple[Item, int]]:
             
             # this returns all items in this order
-        return self.items_list
+        return self.item_list
     
     def __str__(self):
          return (f"Order({self.orderID}, {self.name}, " f"Items: {len(self.item_list)})")
