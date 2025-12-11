@@ -1,5 +1,5 @@
 from order import Order
-from item import Item
+from items import Item
 
 class OrderCheckout:
     # Handles the calculation of the total for a given Order.

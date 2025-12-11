@@ -1,5 +1,5 @@
 from order import Order
-from item import Item
+from items import Item
 from orderCheckout import OrderCheckout
 
 class TakeOrder:

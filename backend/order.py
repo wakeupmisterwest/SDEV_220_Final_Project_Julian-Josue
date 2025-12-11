@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from item import Item
+from items import Item
 
 
 class Order:
