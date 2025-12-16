@@ -21,8 +21,12 @@ class OrderCheckout:
         # price of item multiplied by how many were ordered
             total += item.price * quantity
 
+        tax_rate = 0.07
+        tax = total * tax_rate
+        total += tax
+
         # Return the final total
-        return total
+        return round(total, 2)
 
     def __str__(self):
 

@@ -2,7 +2,7 @@ from tkinter import *
 
 root = Tk()
 root.title("Hello World!!")
-root.iconbitmap('images/1d178f37c8208ad2c497833fafb17e41.ico')
+#root.iconbitmap('images/1d178f37c8208ad2c497833fafb17e41.ico')
 root.geometry('500x300')
 
 # Create global switch variable

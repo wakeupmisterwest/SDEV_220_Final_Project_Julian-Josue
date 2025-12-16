@@ -1,39 +1,88 @@
 from order import Order
-from item import Item
+from items import Item
 from orderCheckout import OrderCheckout
+from typing import Optional
+
 
 class TakeOrder:
+    # this manages the process of taking, modifying, and checking out customer orders
 
-    def __init__(self):
+    def __init__(self, database=None):
+
         # Stores the current active order, none if no order has started
         self.current_order = None
 
-        # stores previously completed orders, this is optional
+        # stores previously completed orders
         self.order_history = []
 
-    def start_new_order(self, order_id: int, customer_name: str = ""):   #  Creates a new order using the Order class.
+    def start_new_order(self, order_id: int, customer_name: str = ""):
 
-        #Working on logic
-        pass
+        #Creates a new order using the Order class
+        if self.current_order is not None:
+            raise ValueError("An order is already in progress. Please checkout or cancel the current order first.")
+        
+        self.current_order = Order(order_id, customer_name)
 
-    def add_item_to_order(self, item: Item, quantity: int = 1):  # adds an item to the current order.
+    def add_item_to_order(self, item: Item, quantity: int = 1):
 
-        #Working on logic
-        pass
+        #Adds an item to the current order
+        if self.current_order is None:
+            raise ValueError("No active order. Start a new order first.")
+        
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than 0.")
+        
+        self.current_order.add_item(item, quantity)
 
-    def remove_item_from_order(self, item_id: int):  # Removes an item from the current order by item ID.
+    def remove_item_from_order(self, item_id: int):
 
-        # Working on logic
+        #Removes an item from the current order by item ID
+        if self.current_order is None:
+            raise ValueError("No active order. Start a new order first.")
+        
         self.current_order.remove_item(item_id)
-        pass
 
-    def checkout_order(self) -> float:   #Uses OrderCheckout to calculate the total and finishes the order.
+    def checkout_order(self) -> float:
+        
+        # Uses OrderCheckout to calculate the total and finishes the order.
+        
+        if self.current_order is None:
+            raise ValueError("No active order to checkout.")
+        
+        if len(self.current_order.item_list) == 0:
+            raise ValueError("Cannot checkout an empty order.")
+        
+        # Calculates total using OrderCheckout
+        checkout = OrderCheckout(self.current_order)
+        total = checkout.calculate_total()
+        
+        # Saves to database if available
+        if self.database:
+            db_order_id = self.database.save_order(self.current_order, total)
+            if db_order_id:
+                print(f"Order saved to database with ID: {db_order_id}")
+        
+        # Saves order to history
+        self.order_history.append(self.current_order)
+        
+        # Resets current order
+        self.current_order = None
+        
+        return total
 
-        # Working on logic
+    def cancel_order(self):
+        # Cancels the current order and resets it
+        if self.current_order is None:
+            raise ValueError("No active order to cancel.")
+        
+        self.current_order = None
 
-        pass
-
-    def cancel_order(self):   #cancels the current order and resets it.
-
-        # Working on logic
-        pass
+    def get_current_order(self) -> Optional[Order]:
+        # Returns the current active order
+        return self.current_order
+    
+    def get_order_history(self) -> list:
+       # Returns the list of all completed orders
+        return self.order_history
+    
+    
