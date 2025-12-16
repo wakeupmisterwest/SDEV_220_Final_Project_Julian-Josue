@@ -5,96 +5,8 @@ from orderCheckout import OrderCheckout
 from takeOrder import TakeOrder
 from items import Item
 from order import Order
-import add_menu_items
+#import add_menu_items
 
-'''
-class Item:
-    """Represents an individual food or drink item in the inventory."""
-
-    def __init__(self, item_id: int, name: str, description: str, price: float):
-        self.itemID = item_id
-        self.item_id = item_id
-        self.name = name
-        self.description = description
-        self.price = price
-
-    def __str__(self) -> str:
-        return f"Item({self.item_id}, {self.name}, ${self.price:.2f})"
-
-    def __repr__(self) -> str:
-        return f"Item(item_id={self.item_id}, name={self.name!r}, price={self.price})"
-
-
-class Order:
-    """Represents a customer order containing items and their quantities."""
-
-    def __init__(self, order_id: int, customer_name: str = ""):
-        self.order_id = order_id
-        self.name = customer_name
-        self.item_list: list[tuple[Item, int]] = []
-
-    def add_item(self, item: Item, quantity: int = 1) -> None:
-        self.item_list.append((item, quantity))
-
-    def remove_item(self, item_id: int) -> None:
-        self.item_list = [(item, qty) for item, qty in self.item_list if item.item_id != item_id]
-
-    def get_items(self) -> list[tuple[Item, int]]:
-        return self.item_list
-
-    def __str__(self) -> str:
-        return f"Order({self.order_id}, {self.name}, Items: {len(self.item_list)})"
-
-
-class OrderCheckout:
-    """Handles the calculation of the total for a given Order."""
-
-    def __init__(self, order: Order) -> None:
-        self.order = order
-
-    def calculate_total(self) -> float:
-        total = 0.0
-        for item, quantity in self.order.item_list:
-            total += item.price * quantity
-        return total
-
-    def __str__(self) -> str:
-        total = self.calculate_total()
-        return f"OrderCheckout(Total: ${total:.2f})"
-
-
-class TakeOrder:
-    """Manages the process of taking, modifying, and checking out customer orders."""
-
-    def __init__(self):
-        self.current_order: Order | None = None
-        self.order_history: list[Order] = []
-
-    def start_new_order(self, order_id: int, customer_name: str = "") -> None:
-        self.current_order = Order(order_id, customer_name)
-
-    def add_item_to_order(self, item: Item, quantity: int = 1) -> None:
-        if self.current_order is None:
-            raise ValueError("No active order. Start a new order first.")
-        self.current_order.add_item(item, quantity)
-
-    def remove_item_from_order(self, item_id: int) -> None:
-        if self.current_order is None:
-            raise ValueError("No active order. Start a new order first.")
-        self.current_order.remove_item(item_id)
-
-    def checkout_order(self) -> float:
-        if self.current_order is None:
-            raise ValueError("No active order to checkout.")
-        checkout = OrderCheckout(self.current_order)
-        total = checkout.calculate_total()
-        self.order_history.append(self.current_order)
-        self.current_order = None
-        return total
-
-    def cancel_order(self) -> None:
-        self.current_order = None
-'''
 
 class OrderApp:
     def __init__(self, root):
@@ -162,25 +74,25 @@ class OrderApp:
         self.display = tk.Text(root, height=10, width=50, state='disabled')
         self.display.pack(pady=10)
         
-        # Set initial order ID
+        # Sets initial order ID
         self.update_order_id_display()
 
     def get_next_order_id(self):
-        """Get the next available order ID"""
+        #Gets the next available order ID
         orders = self.db.get_all_orders(limit=1)
         if orders:
             return orders[0]['order_id'] + 1
         return 1
 
     def update_order_id_display(self):
-        """Update the order ID field"""
+        #Updates the order ID field
         self.order_id_entry.config(state='normal')
         self.order_id_entry.delete(0, tk.END)
         self.order_id_entry.insert(0, str(self.next_order_id))
         self.order_id_entry.config(state='readonly')
 
     def lookup_item(self, event=None):
-        """Look up item from database by ID"""
+        #Look up item from database by ID
         try:
             item_id_str = self.item_id_entry.get().strip()
             if not item_id_str:
@@ -233,13 +145,13 @@ class OrderApp:
             pass  # Ignore if not a valid number
 
     def clear_item_fields(self):
-        """Clear all item entry fields"""
+        #Clears all item entry fields
         self.item_name_entry.delete(0, tk.END)
         self.item_desc_entry.delete(0, tk.END)
         self.item_price_entry.delete(0, tk.END)
 
     def enable_item_fields(self):
-        """Enable item fields for manual entry"""
+        #Enables item fields for manual entry
         self.item_name_entry.config(state='normal')
         self.item_desc_entry.config(state='normal')
         self.item_price_entry.config(state='normal')
@@ -299,17 +211,19 @@ class OrderApp:
 
             item = Item(item_id, name, desc, price)
             
-            # Save custom items (ID 0) to database with a unique ID
+            # Save custom items id 0 to database with a unique ID
             if item_id == 0:
-                # Generate a unique custom ID (use negative numbers for custom items)
+                # Generates a unique custom ID !!!!!(use negative numbers for custom items)
                 all_orders = self.db.get_all_orders(limit=1000)
                 custom_id = -1 - len(all_orders)
                 item = Item(custom_id, name, desc, price)
                 self.db.add_item(item)
                 self.display_message(f"Custom item '{name}' saved to database")
+
             else:
                 # Save item to database if it doesn't exist
                 existing = self.db.get_item(item_id)
+
                 if not existing:
                     self.db.add_item(item)
                     self.display_message(f"Item '{name}' added to database")
@@ -360,8 +274,8 @@ class OrderApp:
             self.take_order.order_history.append(self.take_order.current_order)
             self.take_order.current_order = None
             
-            self.display_message(f"✓ Order #{self.next_order_id} checked out - Total: ${total:.2f}")
-            self.display_message(f"✓ Saved to database as Order #{order_id}")
+            self.display_message(f" Order #{self.next_order_id} checked out - Total: ${total:.2f}")
+            self.display_message(f" Saved to database as Order #{order_id}")
             
             # Increment order ID for next order
             self.next_order_id += 1
@@ -390,7 +304,7 @@ class OrderApp:
         self.display.config(state='disabled')  # Disable again
 
     def on_closing(self):
-        """Clean up database connection when closing"""
+        #Cleans up database connection when closing
         if hasattr(self, 'db'):
             self.db.close()
         self.root.destroy()

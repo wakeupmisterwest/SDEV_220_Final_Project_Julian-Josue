@@ -3,7 +3,7 @@ from items import Item
 
 db = POSDatabase("restaurant.db")
 
-# Add your menu
+# Adds your menu when calling the item number in the pos
 menu = [
     Item(1, "Cheeseburger", "Classic cheeseburger", 9.99),
     Item(2, "Beef Burger", "Plain beef burger", 8.99),
@@ -17,4 +17,4 @@ for item in menu:
     print(f"Added: {item.name}")
 
 db.close()
-print("\n✓ Menu items added!")
+print("\n Menu items added!")

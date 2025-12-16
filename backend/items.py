@@ -1,5 +1,5 @@
 
-#This is item Class and it Represents an individual item food or drink in the inventory
+#This is item Class and it represents an individual item food or drink in the inventory
 
 class Item:
     #Represents an individual item food or drink
